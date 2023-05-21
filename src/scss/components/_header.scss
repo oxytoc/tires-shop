@@ -1,0 +1,44 @@
+@import "../variables";
+
+.header {
+  padding: 0 20px;
+  width: inherit;
+  height: 100px;
+  background-color: $black;
+
+  font-weight: 300;
+  font-size: 24px;
+  line-height: 29px;
+
+  .header__cart-block {
+    span {
+      color: $text-color;
+    }
+  }
+
+  .header__nav {
+    width: 360px;
+
+    @media (max-width: 1400px) {
+      width: 320px;
+    }
+
+    @media (max-width: 1024px) {
+      width: 220px;
+
+      span {
+        display: none;
+      }
+    }
+  }
+
+  .header__cart,
+  .header__user,
+  .header__favorite,
+  span {
+    transition: filter ease-in-out 0.15s;
+    &:hover {
+      filter: opacity(0.5);
+    }
+  }
+}

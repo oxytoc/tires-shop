@@ -1,0 +1,72 @@
+@import "../variables";
+
+.fw-300 {
+  font-weight: 300 !important;
+}
+
+.fw-700 {
+  font-weight: 700 !important;
+}
+
+.fw-400 {
+  font-weight: 400 !important;
+}
+
+.fw-500 {
+  font-weight: 500 !important;
+}
+
+.fs-24 {
+  font-size: 24px !important;
+}
+
+.fs-20 {
+  font-size: 20px !important;
+}
+
+.fs-16 {
+  font-size: 16px !important;
+}
+
+.fs-32 {
+  font-size: 32px !important;
+}
+
+.main-title {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 31px;
+  color: $text-black;
+}
+
+.section-title {
+  font-weight: 300;
+  font-size: 36px;
+  line-height: 38px;
+
+  span {
+    font-weight: 700;
+  }
+}
+
+.description {
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 22px;
+}
+
+.section-title_white {
+  color: $text-color;
+
+  span {
+    color: $text-color;
+  }
+}
+
+.description_white {
+  color: $text-color;
+
+  span {
+    color: $text-color;
+  }
+}

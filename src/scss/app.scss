@@ -1,0 +1,11 @@
+@import "./libs/normalize";
+@import "./variables";
+@import "./components/all";
+
+* {
+  font-family: "Inter", system-ui;
+}
+
+.root {
+  width: 100vw;
+}

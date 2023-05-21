@@ -1,0 +1,166 @@
+@import "../variables";
+
+$bg-image: url("../../assets/img/main/truck.png");
+$bg-image-two: url("../../assets/img/main/tire-change.png");
+
+.home {
+  width: inherit;
+}
+
+.home__intro {
+  height: 540px;
+  padding: 86px 0 54px 165px;
+  display: flex;
+
+  .intro__section-title {
+    min-width: 402px;
+    font-weight: 700;
+  }
+
+  .intro__main-title {
+    font-weight: 300;
+    min-width: 343px;
+  }
+
+  .truck-tires {
+    margin-right: calc(15vw - 50px);
+    width: 700px;
+    height: 400px;
+  }
+
+  .intro__text {
+    width: 440px;
+
+    .text__button {
+      width: 220px;
+      height: 60px;
+      border-radius: 50px;
+
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 19px;
+      color: $text-color;
+    }
+  }
+
+  @media (max-width: 1431px) {
+    padding: 60px 0 54px 80px;
+    justify-content: space-between;
+    .truck-tires {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 1182px) {
+    .truck-tires {
+      width: 500px;
+      height: 300px;
+    }
+  }
+
+  @media (max-width: 980px) {
+    .intro__section-title,
+    .intro__main-title {
+      font-size: 32px;
+    }
+
+    .truck-tires {
+      width: 400px;
+      height: 250px;
+    }
+  }
+}
+
+.home__about-services {
+  height: 820px;
+  background-color: $black;
+  position: relative;
+
+  .tire-tracks {
+    position: absolute;
+    right: 0;
+    top: 82px;
+  }
+
+  .services__about-us {
+    width: 1305px;
+    height: 400px;
+    padding: 70px 575px 85px 167px;
+    background: $bg-image center center no-repeat;
+
+    .section-title {
+      margin-bottom: 50px;
+    }
+  }
+
+  .services {
+    padding-left: 288px;
+    padding-top: 31px;
+  }
+
+  .services__list {
+    max-width: 1210px;
+    .list__item {
+      width: 253px;
+    }
+  }
+
+  @media (max-width: 1305px) {
+    .services__about-us {
+      width: 100vw;
+      padding: 70px 575px 85px 80px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .services__about-us {
+      padding: 70px 400px 85px 80px;
+    }
+  }
+
+  @media (max-width: 1152px) {
+    .services {
+      padding-left: 120px;
+    }
+  }
+}
+
+.home__form {
+  height: 725px;
+  background: $bg-image-two center center no-repeat;
+  padding-left: 278px;
+  padding-top: 125px;
+  padding-bottom: 62px;
+
+  .form {
+    margin-top: 25px;
+
+    .form__input,
+    .form__text {
+      background-color: $black;
+      border-radius: 10px;
+      font-weight: 400;
+      font-size: 16px;
+      padding: 15px 26px;
+      color: $text-color;
+    }
+
+    .form__button {
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .form__input,
+    .form__text,
+    .form__button {
+      width: calc(20vw + 50px);
+      height: 52px;
+      margin-bottom: 15px;
+    }
+    .form__text {
+      height: 205px;
+    }
+  }
+}

@@ -1,0 +1,38 @@
+@import "../variables";
+
+.button {
+  display: inline-block;
+  background-color: $green;
+  width: 420px;
+  height: 50px;
+  cursor: pointer;
+  border-radius: 10px;
+  text-align: center;
+  border: 0;
+  color: $text-color;
+  transition: background-color 0.15s ease-in-out;
+
+  &:hover {
+    background-color: darken($green, 3%);
+  }
+
+  &_white {
+    cursor: pointer;
+    width: 150px;
+    height: 60px;
+    background-color: #efefef;
+    border: 0;
+    border-radius: 20px;
+    box-shadow: 7px 7px 5px rgba(255, 255, 255, 0.25);
+    color: $text-black;
+    transition: background-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+
+    &:hover {
+      background-color: darken(#efefef, 10%);
+    }
+
+    @media (max-width: 1400px) {
+      width: 120px;
+    }
+  }
+}
