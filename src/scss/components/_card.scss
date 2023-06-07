@@ -7,10 +7,11 @@
   margin-left: auto;
   max-width: 1870px;
   .options {
+    position: relative;
     margin-right: 40px;
     padding-top: 20px;
     width: 400px;
-    height: 1015px;
+    min-height: 1015px;
     background-color: $dark-green;
     border-radius: 20px;
 
@@ -21,84 +22,6 @@
 
     .options__list {
       padding: 30px 28px 100px;
-
-      .options__item {
-        position: relative;
-        width: 360px;
-        height: 80px;
-        background-color: #efefef;
-        border-radius: 20px;
-        margin-bottom: 30px;
-        padding: 20px 20px;
-        cursor: pointer;
-
-        .options__popup {
-          z-index: 1;
-          position: absolute;
-          top: 0;
-          right: 0;
-          margin-top: 85px;
-          background: #efefef;
-          box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.09);
-          border-radius: 10px;
-          overflow: hidden;
-          padding: 10px 0;
-          width: 100px;
-
-          ul {
-            .active {
-              background: darken($color: #efefef, $amount: 10);
-            }
-            li {
-              text-align: center;
-              font-weight: 400;
-              font-size: 20px;
-            }
-          }
-        }
-
-        p {
-          font-weight: 400;
-          font-size: 28px;
-          color: $text-black;
-        }
-        &:last-child {
-          margin-bottom: 0;
-          background-color: $dark-green;
-          cursor: auto;
-
-          span {
-            width: 18px;
-            height: 5px;
-            border-radius: 3px;
-            background: #f9f9f9;
-          }
-        }
-
-        .price {
-          .price__input {
-            input {
-              width: 130px;
-              height: 60px;
-              padding: 10px;
-              background-color: $dark-green;
-              color: #f9f9f9;
-              border: 5px solid #f9f9f9;
-              text-align: center;
-              border-radius: 20px;
-              font-weight: 500;
-              font-size: 16px;
-
-              &::placeholder {
-                text-align: center;
-                color: darken(#f9f9f9, 10%);
-                font-weight: 500;
-                font-size: 16px;
-              }
-            }
-          }
-        }
-      }
     }
 
     .options__button {
@@ -113,6 +36,119 @@
         box-shadow: none;
         span {
           color: $text-black;
+        }
+      }
+    }
+  }
+
+  .options__item {
+    position: relative;
+    width: 360px;
+    min-height: 80px;
+    background-color: #efefef;
+    border-radius: 20px;
+    margin-bottom: 30px;
+    cursor: pointer;
+
+    &:hover{
+      background-color: rgba(#efefef, .9)
+    }
+
+    .item{
+      width: inherit;
+      height: 80px;
+      padding: 20px 20px;
+    }
+
+    .options__popup {
+      border-top: 1px solid rgba(0, 0, 0, 0.2);;
+      background: #efefef;
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.09);
+      border-radius: 10px;
+      overflow: hidden;
+      width: inherit;
+      max-height: 100px;
+
+      .popup__list{
+        width: inherit;
+        max-height: inherit;
+        overflow: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(20, 20, 20, 0.5);
+
+        &:hover{
+          &::-webkit-scrollbar-thumb {
+            background-color: rgba(20, 20, 20, 0.6);    /* цвет бегунка */
+          }
+        }
+  
+        &::-webkit-scrollbar{
+          width: 7px;
+        }
+        &::-webkit-scrollbar-thumb {
+          background-color: rgba(20, 20, 20, 0.5);    /* цвет бегунка */
+          border-radius: 20px;       /* округлось бегунка */
+        }
+
+        .active {
+          background: darken($color: #efefef, $amount: 10);
+        }
+
+        li {
+          height: 30px;
+          text-align: center;
+          font-weight: 400;
+          font-size: 20px;
+
+          &:hover{
+            background: darken($color: #efefef, $amount: 15);
+          }
+          
+          &:active{
+            background: darken($color: #efefef, $amount: 10);
+          }
+        }
+      }
+    }
+
+    p {
+      font-weight: 400;
+      font-size: 28px;
+      color: $text-black;
+    }
+    &:last-child {
+      margin-bottom: 0;
+      background-color: $dark-green;
+      cursor: auto;
+
+      span {
+        width: 18px;
+        height: 5px;
+        border-radius: 3px;
+        background: #f9f9f9;
+      }
+    }
+
+    .price {
+      .price__input {
+        input {
+          width: 130px;
+          height: 60px;
+          padding: 10px;
+          background-color: $dark-green;
+          color: #f9f9f9;
+          border: 5px solid #f9f9f9;
+          text-align: center;
+          border-radius: 20px;
+          font-weight: 500;
+          font-size: 16px;
+
+          &::placeholder {
+            text-align: center;
+            color: darken(#f9f9f9, 10%);
+            font-weight: 500;
+            font-size: 16px;
+          }
         }
       }
     }

@@ -25,13 +25,15 @@ function App() {
           await Promise.all([
             axios.get("http://localhost:4000/cart"),
             axios.get("http://localhost:4000/favorite"),
-            axios.get("http://localhost:4000/items"),
+            axios.get("http://127.0.0.1:8000/api/v1/items"),
+            // axios.get("http://127.0.0.1:8000/api/v1/items"),
           ]);
         // setIsLoading(false);
         dispatch(setCartItems(cartItemsResponse.data));
         dispatch(setItems(itemsResponse.data));
         dispatch(setFavoriteItems(favoritesResponse.data));
         dispatch(setTotalPrice());
+        // console.log(items.data, itemsResponse.data);
         // setCartItems(cartItemsResponse.data);
         // setFavorites(favoritesResponse.data);
       } catch (error) {

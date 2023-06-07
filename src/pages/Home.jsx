@@ -1,10 +1,4 @@
 import React from "react";
-import axios from "axios";
-
-import { useDispatch } from "react-redux";
-import { setCartItems } from "../redux/slices/drawerSlice";
-import { setItems } from "../redux/slices/tiresSlice";
-import { setFavoriteItems } from "../redux/slices/tiresSlice";
 
 import tires from "../assets/img/main/tires.png";
 import decorOne from "../assets/img/main/decor-one.svg";

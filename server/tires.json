@@ -143,6 +143,18 @@
       "loadIndex": "160K",
       "price": 27000,
       "fullDescription": "BOTO BT215 160K 385 55 22.5 20"
+    },
+    {
+      "id": 13,
+      "brand": "BOTO",
+      "model": "BT215",
+      "width": 355,
+      "height": 45,
+      "diametr": 20.5,
+      "plyRating": 30,
+      "loadIndex": "160V",
+      "price": 29000,
+      "fullDescription": "BOTO BT215 160K 385 55 22.5 20"
     }
   ],
   "favorite": [],

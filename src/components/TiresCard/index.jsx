@@ -9,7 +9,6 @@ import { toggleFavItem } from "../../redux/slices/tiresSlice";
 
 import lickedImg from "../../assets/img/catalog/licked.svg";
 import unLickedImg from "../../assets/img/catalog/unlicked.svg";
-import addedImg from "../../assets/img/catalog/added.svg";
 
 import styles from "./TiresCard.module.scss";
 
@@ -37,6 +36,7 @@ export default function TiresCard({
     plyRating,
     loadIndex,
     price,
+    imageUrl
   };
 
   const dispatch = useDispatch();
@@ -138,7 +138,7 @@ export default function TiresCard({
             className={styles.product__added}
             width={50}
             height={50}
-            src={addedImg}
+            src={imageUrl}
             alt="Added to cart"
             onClick={() => onClickAdd()}
           />
