@@ -14,6 +14,8 @@ import { Drawer } from "./components/Drawer";
 import "./scss/app.scss";
 import { Card } from "./pages/Card";
 import { Favorite } from "./pages/Favorite";
+import { Login } from "./components/Login";
+import { Registration } from "./components/Registration";
 
 function App() {
   const dispatch = useDispatch();
@@ -45,13 +47,15 @@ function App() {
   }, []);
   return (
     <div className="app">
-      <Drawer />
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/card" element={<Card />} />
         <Route path="/favorite" element={<Favorite />} />
       </Routes>
+      <Drawer />
+      <Registration />
+      <Login />
       <Footer />
     </div>
   );

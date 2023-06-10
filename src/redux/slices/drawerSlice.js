@@ -4,12 +4,15 @@ const initialState = {
   cartItems: [],
   totalPrice: 0,
   cartOpenned: false,
+  loginOpenned: false,
+  registrationOpenned: false,
 };
 
 const drawerSlice = createSlice({
   name: "tires",
   initialState,
   reducers: {
+
     addItem(state, action) {
       const findItemId = state.cartItems.find(
         (obj) => obj.id === action.payload.id
@@ -23,6 +26,7 @@ const drawerSlice = createSlice({
         });
       }
     },
+
     decreaseItem(state, action) {
       const findItemId = state.cartItems.find(
         (obj) => obj.id === action.payload
@@ -36,27 +40,42 @@ const drawerSlice = createSlice({
         );
       }
     },
+
     removeItem(state, action) {
       state.cartItems = state.cartItems.filter(
         (obj) => obj.id !== action.payload.id
       );
     },
+
     setCartItems(state, action) {
       state.cartItems = action.payload;
     },
+
     setCartOpenned(state, action) {
       state.cartOpenned = action.payload;
     },
+
     setTotalPrice(state) {
       state.totalPrice = state.cartItems.reduce((sum, obj) => {
         return obj.price * obj.count + sum;
       }, 0);
     },
+
+    setLoginOpenned(state, action) {
+      state.loginOpenned = action.payload;
+    },
+
+    setRegistrationOpenned(state, action) {
+      state.registrationOpenned = action.payload;
+    },
+    
   },
 });
 
 export const {
   setCartOpenned,
+  setLoginOpenned,
+  setRegistrationOpenned,
   setCartItems,
   addItem,
   setTotalPrice,

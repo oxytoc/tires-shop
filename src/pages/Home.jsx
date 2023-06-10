@@ -126,9 +126,9 @@ export const Home = () => {
             className="form__input"
           />
           <input
-            id="email"
+            id="phone"
             type="tel"
-            name="email"
+            name="phone"
             placeholder="Телефон"
             className="form__input"
           />
