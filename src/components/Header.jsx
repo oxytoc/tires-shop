@@ -20,7 +20,6 @@ function Header() {
     (state) => state.loginSlice
   );
 
-  console.log(authToken.length);
   // const { cartOpenned } = useSelector((state) => state.drawerSlice);
   const dispatch = useDispatch();
   const { totalPrice } = useSelector((state) => state.drawerSlice);

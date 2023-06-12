@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import debounce from "lodash.debounce";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -15,6 +16,7 @@ import {
 import styles from "./Login.module.scss";
 import close from "../../assets/img/cart/close-cart.svg";
 import { Error } from "../Eror";
+import { setUser } from "../../redux/slices/userSlice";
 
 export const Login = () => {
 
@@ -22,9 +24,13 @@ export const Login = () => {
     (state) => state.drawerSlice
   );
 
-  const { loginUsername, loginPassword, loginErrors } = useSelector(
+  const { loginUsername, loginPassword, loginErrors, authToken } = useSelector(
     (state) => state.loginSlice
   );
+
+  const [loginValue, setLoginValue] = React.useState("");
+  const [passwordValue, setPasswordValue] = React.useState("");
+
 
   const dispatch = useDispatch();
 
@@ -38,6 +44,7 @@ export const Login = () => {
 
   const onClickLogin = async (e) => {
     e.preventDefault();
+
     try {
       const loginResponse = await axios.post(
         "http://127.0.0.1:8000/api/v1/auth/token/login/",
@@ -48,12 +55,49 @@ export const Login = () => {
       );
       dispatch(setAuthToken(loginResponse.data));
       dispatch(setLoginOpenned(false));
-      dispatch(setPassword(''));
-      dispatch(setUsername(''));
+      resetAll();
+      try {
+        const userResponse = await axios.get("http://127.0.0.1:8000/api/v1/auth/users/", {
+          headers: {
+            "Authorization": `Token ${loginResponse.data.auth_token}`,
+          }
+        })
+        console.log(userResponse.data);
+        dispatch(setUser(userResponse.data));
+      } catch (error) {
+        console.log(error);
+      }
+
     } catch (error) {
       dispatch(setErrors(error.response.data));
       console.log(error.response.data);
     }
+  };
+
+  const onChangeInput = (e, setter, setValue) => {
+    setValue(e.target.value);
+    updateWithDebounce(setter, e.target.value);
+  };
+
+  //дебаунс отложенное выполнение функции
+  const updateWithDebounce = React.useCallback(
+    debounce((setter,str) => {
+      dispatch(setter(str));
+    }, 350),
+    []
+  );
+
+  const resetAll = () => {
+    dispatch(setPassword(''));
+    dispatch(setUsername(''));
+    dispatch(setErrors([]));
+    setLoginValue('');
+    setPasswordValue('');
+  };
+
+  const closeLogin = () => {
+    dispatch(setLoginOpenned(false));
+    resetAll();
   };
 
   return (
@@ -67,7 +111,7 @@ export const Login = () => {
           <img
             src={close}
             alt="Close login"
-            onClick={() => dispatch(setLoginOpenned(false))}
+            onClick={() => closeLogin()}
           />
         </div>
 
@@ -77,10 +121,10 @@ export const Login = () => {
             <input
               required
               name="loginUsername"
-              value={loginUsername}
+              value={loginValue}
               type="text"
               placeholder="Введите логин"
-              onChange={(e) => dispatch(setUsername(e.target.value))}
+              onChange={(e) => onChangeInput(e, setUsername, setLoginValue)}
             />
             {loginErrors.username
               ? loginErrors.username.map((error) => <Error error={error} />)
@@ -92,10 +136,10 @@ export const Login = () => {
             <input
               required
               name="loginPassword"
-              value={loginPassword}
+              value={passwordValue}
               type="password"
               placeholder="Введите пароль"
-              onChange={(e) => dispatch(setPassword(e.target.value))}
+              onChange={(e) => onChangeInput(e, setPassword, setPasswordValue)}
             />
             {loginErrors.password
               ? loginErrors.password.map((error) => <Error error={error} />)

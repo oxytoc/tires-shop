@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import debounce from "lodash.debounce";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -22,14 +23,16 @@ export const Registration = () => {
     (state) => state.registrationSlice
   );
 
+  const [loginValue, setLoginValue] = React.useState("");
+  const [passwordValue, setPasswordValue] = React.useState("");
+
+
   const dispatch = useDispatch();
 
   const onClickLogin = () => {
     dispatch(setLoginOpenned(true));
     dispatch(setRegistrationOpenned(false));
-    dispatch(setPassword(''));
-    dispatch(setUsername(''));
-    dispatch(setErrors([]));
+    resetAll();
   };
 
   const onClickRegister = async (e) => {
@@ -44,11 +47,36 @@ export const Registration = () => {
       );
       dispatch(setRegistrationOpenned(false));
       dispatch(setLoginOpenned(true));
-      dispatch(setPassword(''));
-      dispatch(setUsername(''));
+      resetAll();
     } catch (error) {
       dispatch(setErrors(error.response.data));
     }
+  };
+
+  const onChangeInput = (e, setter, setValue) => {
+    setValue(e.target.value);
+    updateWithDebounce(setter, e.target.value);
+  };
+
+  //дебаунс отложенное выполнение функции
+  const updateWithDebounce = React.useCallback(
+    debounce((setter,str) => {
+      dispatch(setter(str));
+    }, 350),
+    []
+  );
+  
+  const resetAll = () => {
+    dispatch(setPassword(''));
+    dispatch(setUsername(''));
+    dispatch(setErrors([]));
+    setLoginValue('');
+    setPasswordValue('');
+  };
+
+  const closeReg = () => {
+    dispatch(setRegistrationOpenned(false));
+    resetAll();
   };
 
   return (
@@ -61,8 +89,8 @@ export const Registration = () => {
           <h1>Зарегестрируйтесь</h1>
           <img
             src={close}
-            alt="Close login"
-            onClick={() => dispatch(setRegistrationOpenned(false))}
+            alt="Close registration"
+            onClick={() => closeReg()}
           />
         </div>
 
@@ -72,10 +100,10 @@ export const Registration = () => {
             <input
               required
               name="registrationUsername"
-              value={username}
+              value={loginValue}
               type="text"
               placeholder="Введите логин"
-              onChange={(e) => dispatch(setUsername(e.target.value))}
+              onChange={(e) => onChangeInput(e, setUsername, setLoginValue)}
             />
             {errors.username
               ? errors.username.map((error) => <Error error={error} />)
@@ -87,10 +115,10 @@ export const Registration = () => {
             <input
               required
               name="registerPassword"
-              value={password}
+              value={passwordValue}
               type="password"
               placeholder="Введите пароль"
-              onChange={(e) => dispatch(setPassword(e.target.value))}
+              onChange={(e) => onChangeInput(e, setPassword, setPasswordValue)}
             />
             {errors.password
               ? errors.password.map((error) => <Error error={error} />)
