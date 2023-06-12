@@ -45,6 +45,7 @@ function App() {
     }
     fetchData();
   }, []);
+
   return (
     <div className="app">
       <Header />

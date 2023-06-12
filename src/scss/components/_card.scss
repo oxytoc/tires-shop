@@ -171,6 +171,10 @@
         margin-right: 25px;
       }
 
+      &:hover{
+        background: darken($color: $dark-green, $amount: 5);
+      }
+
       span {
         font-weight: 400;
         font-size: 24px;

@@ -2,21 +2,27 @@ import React from "react";
 
 import TiresCard from "../components/TiresCard";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Options } from "../components/Options";
+import { setCategory } from "../redux/slices/tiresSlice";
 
 export const Card = () => {
   // const _ = require("lodash");
+  const dispatch = useDispatch();
 
-  const { items } = useSelector((state) => state.tiresSlice);
+  const { items, category, categoryName } = useSelector((state) => state.tiresSlice);
   const { value } = useSelector((state) => state.searchSlice);
   
   const renderItems = () => {
     const filterItems = items.filter((item) =>
       item.fullDescription.toLowerCase().includes(value.toLowerCase())
     );
-    return filterItems.map((obj) => <TiresCard key={obj.id} {...obj} />);
+    return filterItems.map((obj) => <TiresCard key={obj.id} categoryItem={category} {...obj} />);
   };
+
+  const onClickCategory  = (category) => {
+    dispatch(setCategory(category));
+  }
 
   return (
     <div className="card d-flex">
@@ -24,16 +30,16 @@ export const Card = () => {
       <div className="card__list">
         <div className="card__block">
           <button className="card__button button">
-            <span>Грузовые шины</span>
+            <span onClick={() => onClickCategory(1)}>Грузовые шины</span>
           </button>
           <button className="card__button button">
-            <span>Шины для спецтехники</span>
+            <span onClick={() => onClickCategory(2)}>Шины для спецтехники</span>
           </button>
         </div>
         {value ? (
           <h1 className="main-title mb-15">Поиск по запроу: "{value}"</h1>
         ) : (
-          <h1 className="main-title mb-15">Каталог грузовых шин</h1>
+          <h1 className="main-title mb-15">{categoryName}</h1>
         )}
 
         <div className="card__products d-flex justify-between flex-wrap">

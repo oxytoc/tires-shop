@@ -24,6 +24,8 @@ export default function TiresCard({
   width,
   height,
   image,
+  category,
+  categoryItem,
 }) {
   const productItem = {
     id,
@@ -78,71 +80,63 @@ export default function TiresCard({
   };
 
   return (
-    <div className={styles.product}>
-      <div
-        className={styles.product__favorite}
-        onClick={() => onClickFavItems()}>
-        {favFindItem ? (
-          <img
-            src={lickedImg}
-            alt="unAdded to favorite product"
-            width={40}
-            height={40}
-          />
-        ) : (
-          <img
-            src={unLickedImg}
-            alt="Added to favorite product"
-            width={40}
-            height={40}
-          />
-        )}
-      </div>
-      <img
-        className={styles.product__image}
-        width={150}
-        height={150}
-        src={image}
-        alt={modelBrand}
-      />
-      <h3 className={styles.product__title}>
-        Автошина {model} {brand} {loadIndex}
-      </h3>
-      <p className={styles.product__description}>
-        {width}/{height} R{diametr} {plyRating}PR
-      </p>
-      <div className="d-flex justify-between align-center">
-        <div className="d-flex justify-between flex-column">
-          <span className={styles.product__price}>Цена</span>
-          <b className="fw-700 fs-20">{price} руб.</b>
-        </div>
+    <>
+      {category ===
+        categoryItem ? (
+          <div className={styles.product}>
+            <div
+              className={styles.product__favorite}
+              onClick={() => onClickFavItems()}>
+              {favFindItem ? (
+                <img
+                  src={lickedImg}
+                  alt="unAdded to favorite product"
+                  width={40}
+                  height={40}
+                />
+              ) : (
+                <img
+                  src={unLickedImg}
+                  alt="Added to favorite product"
+                  width={40}
+                  height={40}
+                />
+              )}
+            </div>
+            <img
+              className={styles.product__image}
+              width={150}
+              height={150}
+              src={image}
+              alt={modelBrand}
+            />
+            <h3 className={styles.product__title}>
+              Автошина {model} {brand} {loadIndex}
+            </h3>
+            <p className={styles.product__description}>
+              {width}/{height} R{diametr} {plyRating}PR
+            </p>
+            <div className="d-flex justify-between align-center">
+              <div className="d-flex justify-between flex-column">
+                <span className={styles.product__price}>Цена</span>
+                <b className="fw-700 fs-20">{price} руб.</b>
+              </div>
 
-        {findItem ? (
-          <CountItem productItem={productItem} findItem={findItem} />
-        ) : (
-          // <div className={styles.product__counter}>
-          //   <img
-          //     src={minusImg}
-          //     alt="Decrease item"
-          //     onClick={() => onClickDecrease()}
-          //   />
-          //   <b>{addedCount}</b>
-          //   <img
-          //     src={plusImg}
-          //     alt="Increase item"
-          //     onClick={() => onClickAdd()}
-          //   />
-          // </div>
-          <img
-            className={styles.product__added}
-            width={50}
-            height={50}
-            src={addedImg}
-            alt="Added to cart"
-            onClick={() => onClickAdd()}
-          />
-        )}
-      </div>
-    </div>
+              {findItem ? (
+                <CountItem productItem={productItem} findItem={findItem} />
+              ) : (
+                <img
+                  className={styles.product__added}
+                  width={50}
+                  height={50}
+                  src={addedImg}
+                  alt="Added to cart"
+                  onClick={() => onClickAdd()}
+                />
+              )}
+            </div>
+          </div>
+        ): null}
+    </>
   );
 }
