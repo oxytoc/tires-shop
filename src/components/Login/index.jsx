@@ -4,6 +4,7 @@ import debounce from "lodash.debounce";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
+  setIdItems,
   setLoginOpenned,
   setRegistrationOpenned,
 } from "../../redux/slices/drawerSlice";
@@ -24,7 +25,7 @@ export const Login = () => {
     (state) => state.drawerSlice
   );
 
-  const { loginUsername, loginPassword, loginErrors, authToken } = useSelector(
+  const { loginUsername, loginPassword, loginErrors } = useSelector(
     (state) => state.loginSlice
   );
 
@@ -56,6 +57,7 @@ export const Login = () => {
       dispatch(setAuthToken(loginResponse.data));
       dispatch(setLoginOpenned(false));
       resetAll();
+
       try {
         const userResponse = await axios.get("http://127.0.0.1:8000/api/v1/auth/users/", {
           headers: {
@@ -68,11 +70,27 @@ export const Login = () => {
         console.log(error);
       }
 
+      getCartOnLogin(loginResponse.data.auth_token)
+
     } catch (error) {
       dispatch(setErrors(error.response.data));
       console.log(error.response.data);
     }
   };
+
+  const getCartOnLogin = async (authToken) => {
+    try {
+      const { data } = await axios.get("http://127.0.0.1:8000/api/v1/cart/", {
+        headers: {
+          "Authorization": `Token ${authToken}`,
+        },
+      });
+      console.log(data);
+      dispatch(setIdItems(data));
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const onChangeInput = (e, setter, setValue) => {
     setValue(e.target.value);

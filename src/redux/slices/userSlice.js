@@ -19,7 +19,7 @@ const userSlice = createSlice({
         state.firstName = value.first_name;
         state.lastName = value.last_name;
         state.email = value.email;
-      })
+      });
     },
   },
 });

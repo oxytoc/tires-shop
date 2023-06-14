@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCartItems, setTotalPrice } from "./redux/slices/drawerSlice";
 import { setItems } from "./redux/slices/tiresSlice";
 import { setFavoriteItems } from "./redux/slices/tiresSlice";
@@ -18,33 +18,50 @@ import { Login } from "./components/Login";
 import { Registration } from "./components/Registration";
 
 function App() {
+  const { authToken } = useSelector((state) => state.loginSlice);
+  const { items } = useSelector((state) => state.tiresSlice);
+  const { cartItems } = useSelector((state) => state.drawerSlice);
+
   const dispatch = useDispatch();
 
   React.useEffect(() => {
     async function fetchData() {
       try {
-        const [cartItemsResponse, favoritesResponse, itemsResponse] =
+
+        if( authToken.length !== 0 ) {
+          const cartItemsResponse = await axios.get("http://127.0.0.1:8000/api/v1/cart/",  {
+            headers: {
+              "Authorization": `Token ${authToken.auth_token}`,
+            }
+          });
+          const cartItems = [];
+          items.map((item) => {
+            cartItemsResponse.data.map((cartItem) => {
+              if(item.id === cartItem.item) {
+                const count = cartItem.count;
+                const cartId = cartItem.id;
+                cartItems.push({cartId, count, ...item});
+              }
+            })
+          })
+          dispatch(setCartItems(cartItems));
+        };
+
+        const [ favoritesResponse, itemsResponse] =
           await Promise.all([
-            axios.get("http://localhost:4000/cart"),
             axios.get("http://localhost:4000/favorite"),
             axios.get("http://127.0.0.1:8000/api/v1/items"),
-            // axios.get("http://127.0.0.1:8000/api/v1/items"),
           ]);
-        // setIsLoading(false);
-        dispatch(setCartItems(cartItemsResponse.data));
         dispatch(setItems(itemsResponse.data));
         dispatch(setFavoriteItems(favoritesResponse.data));
         dispatch(setTotalPrice());
-        // console.log(items.data, itemsResponse.data);
-        // setCartItems(cartItemsResponse.data);
-        // setFavorites(favoritesResponse.data);
       } catch (error) {
         alert("Ошибка при запросе данных");
         console.error(error);
       }
     }
     fetchData();
-  }, []);
+  }, [authToken]);
 
   return (
     <div className="app">

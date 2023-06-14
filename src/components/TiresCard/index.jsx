@@ -42,9 +42,14 @@ export default function TiresCard({
 
   const dispatch = useDispatch();
   const { cartItems } = useSelector((state) => state.drawerSlice);
-  const { favItems } = useSelector((state) => state.tiresSlice);
+  const { favItems, items } = useSelector((state) => state.tiresSlice);
+  const { id: userId } = useSelector((state) => state.userSlice);
 
   const modelBrand = model + " " + brand;
+
+  const { authToken } = useSelector(
+    (state) => state.loginSlice
+  );
 
   const findItem = useSelector((state) =>
     state.drawerSlice.cartItems.find((obj) => obj.id === id)
@@ -52,17 +57,27 @@ export default function TiresCard({
 
   const favFindItem = favItems.find((obj) => obj.id === id);
 
+  let cartItemsAfterResponse = {};
+
   const onClickAdd = async () => {
-    dispatch(addItem(productItem));
-    dispatch(setTotalPrice());
-    const findItemId = cartItems.find((obj) => obj.id === id);
     try {
-      if (!findItemId) {
-        await axios.post(`http://localhost:4000/cart`, {
-          count: 1,
-          ...productItem,
-        });
-      }
+      const cartItemResponse = await axios.post('http://127.0.0.1:8000/api/v1/cart/', {
+        user: userId,
+        item: id,
+      }, {
+        headers: {
+          "Authorization": `Token ${authToken.auth_token}`,
+        }
+      });
+      items.map((item) => {
+        if(item.id === cartItemResponse.data.item) {
+          const count = cartItemResponse.data.count;
+          const cartId = cartItemResponse.data.id;
+          cartItemsAfterResponse = {cartId, count, ...item};
+        }
+      })
+      dispatch(addItem(cartItemsAfterResponse));
+      dispatch(setTotalPrice());
     } catch (error) {
       alert(error);
     }
@@ -122,8 +137,8 @@ export default function TiresCard({
                 <b className="fw-700 fs-20">{price} руб.</b>
               </div>
 
-              {findItem ? (
-                <CountItem productItem={productItem} findItem={findItem} />
+              { findItem ? (
+                <CountItem productItem={findItem} findItem={findItem} />
               ) : (
                 <img
                   className={styles.product__added}

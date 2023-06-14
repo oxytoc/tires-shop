@@ -38,7 +38,7 @@ export const Registration = () => {
   const onClickRegister = async (e) => {
     e.preventDefault();
     try {
-      const registrationResponse = await axios.post(
+      await axios.post(
         "http://127.0.0.1:8000/api/v1/auth/users/",
         {
           username: username,

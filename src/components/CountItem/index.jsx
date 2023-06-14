@@ -6,6 +6,7 @@ import {
   addItem,
   decreaseItem,
   setTotalPrice,
+  setCartItems,
 } from "../../redux/slices/drawerSlice";
 
 import minusImg from "../../assets/img/catalog/minus.svg";
@@ -15,35 +16,70 @@ import styles from "./CountItem.module.scss";
 
 export default function CountItem({ productItem, findItem }) {
   const dispatch = useDispatch();
+  const { items } = useSelector((state) => state.tiresSlice);
   const { cartItems } = useSelector((state) => state.drawerSlice);
-
+  const { authToken } = useSelector((state) => state.loginSlice);
   const addedCount = findItem ? findItem.count : 0;
 
   const onClickAdd = async () => {
     dispatch(addItem(productItem));
     dispatch(setTotalPrice());
-    const findItemId = cartItems.find((obj) => obj.id === productItem.id);
     try {
-      if (!findItemId) {
-        await axios.post(`http://localhost:4000/cart`, {
-          count: 1,
-          ...productItem,
+        await axios.patch(`http://127.0.0.1:8000/api/v1/cart/${productItem.cartId}/`, {
+          count: productItem.count+1,
+        }, {
+          headers: {
+            "Authorization": `Token ${authToken.auth_token}`,
+          }
         });
-      }
     } catch (error) {
       alert(error);
     }
   };
 
   const onClickDecrease = async () => {
-    dispatch(decreaseItem(productItem.id));
+    dispatch(decreaseItem(productItem.cartId));
     dispatch(setTotalPrice());
-    const findItemId = cartItems.find((obj) => obj.id === productItem.id);
-    console.log(findItemId);
+    const findItemId = cartItems.find((obj) => obj.cartId === productItem.cartId);
     try {
-      if (findItemId && findItemId.count === 1) {
-        await axios.delete(`http://localhost:4000/cart/${productItem.id}`);
+      //delete
+      if (findItemId && findItemId.count === 1 && authToken.length !== 0) {     
+        await axios.delete(`http://127.0.0.1:8000/api/v1/cart/${productItem.cartId}/`, {
+          headers: {
+            "Authorization": `Token ${authToken.auth_token}`,
+          }
+        });
       }
+      //decrese
+      if (findItemId && findItemId.count > 1) {
+        await axios.patch(`http://127.0.0.1:8000/api/v1/cart/${productItem.cartId}/`, {
+          count: productItem.count-1,
+        }, {
+          headers: {
+            "Authorization": `Token ${authToken.auth_token}`,
+          }
+        });
+      }
+      //updaate
+      if( authToken.length !== 0 ) {
+        const cartItemsResponse = await axios.get("http://127.0.0.1:8000/api/v1/cart/",  {
+          headers: {
+            "Authorization": `Token ${authToken.auth_token}`,
+          }
+        });
+        const cartItems = [];
+        items.map((item) => {
+          cartItemsResponse.data.map((cartItem) => {
+            if(item.id === cartItem.item) {
+              const count = cartItem.count;
+              const cartId = cartItem.id;
+              cartItems.push({cartId, count, ...item});
+            }
+          })
+        })
+        dispatch(setCartItems(cartItems));
+        dispatch(setTotalPrice());
+      };
     } catch (error) {
       console.log(error);
     }

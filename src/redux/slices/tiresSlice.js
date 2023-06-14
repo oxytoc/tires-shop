@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   items: [],
   favItems: [],
+  cartItems: [],
   category: 1,
   categoryName: "Каталог грузовых шин",
 };
@@ -39,9 +40,14 @@ const tiresSlice = createSlice({
         state.categoryName = "Каталог шин для спецтехники";
       }
     },
+    getItemFromId(state, action) {
+      state.cartItems.push(state.items.find((item) => {
+        item.id = action.payload;
+      }));
+    }
   },
 });
 
-export const { setItems, setFavoriteItems, toggleFavItem, setCategory } = tiresSlice.actions;
+export const { setItems, setFavoriteItems, toggleFavItem, setCategory, getItemFromId } = tiresSlice.actions;
 
 export default tiresSlice.reducer;

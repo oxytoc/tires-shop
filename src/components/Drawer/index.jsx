@@ -17,8 +17,8 @@ export const Drawer = () => {
 
   const dispatch = useDispatch();
 
-  const renderCartItems = (obj) => {
-    return <DrawerItem obj={obj} />;
+  const renderCartItems = (item) => {
+    return <DrawerItem obj={item} />;
   };
 
   return (

@@ -14,20 +14,20 @@ import styles from "./DrawerItem.module.scss";
 export default function DrawerItem({ obj }) {
   const dispatch = useDispatch();
 
+  const { authToken } = useSelector((state) => state.loginSlice);
+
   const onClickRemove = async (obj) => {
     try {
-      await axios.delete(`http://localhost:4000/cart/${obj.id}`);
+      await axios.delete(`http://127.0.0.1:8000/api/v1/cart/${obj.cartId}/`, {
+        headers: {
+          "Authorization": `Token ${authToken.auth_token}`,
+        }
+      });
     } catch (error) {
       alert(error);
     }
     dispatch(removeItem(obj));
     dispatch(setTotalPrice());
-    // dispatch(setTotalPrice());
-    // try {
-    //   await axios.post(`http://localhost:4000/cart`, item);
-    // } catch (error) {
-    //   alert(error);
-    // }
   };
 
   const findItem = useSelector((state) =>
@@ -50,10 +50,9 @@ export default function DrawerItem({ obj }) {
           {obj.width}/{obj.height} R{obj.diametr} {obj.plyRating}
           PR
         </p>
-        {/* <b className="fw-700 fs-20">{obj.price} руб.</b> */}
         <div className="flex flex-column justify-between">
           <b className="fw-700 fs-20">{obj.price} руб.</b>
-          <CountItem productItem={obj} findItem={findItem} />
+          <CountItem obj={obj} findItem={findItem} />
         </div>
       </div>
       <img

@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  idItems: [],
   cartItems: [],
   totalPrice: 0,
   cartOpenned: false,
@@ -12,7 +13,11 @@ const drawerSlice = createSlice({
   name: "tires",
   initialState,
   reducers: {
-
+    setIdItems(state, action) {
+      action.payload.map(obj => {
+        return state.idItems.push(obj.item);
+      })
+    },
     addItem(state, action) {
       const findItemId = state.cartItems.find(
         (obj) => obj.id === action.payload.id
@@ -21,8 +26,7 @@ const drawerSlice = createSlice({
         findItemId.count++;
       } else {
         state.cartItems.push({
-          ...action.payload,
-          count: 1,
+          ...action.payload
         });
       }
     },
@@ -81,6 +85,7 @@ export const {
   setTotalPrice,
   removeItem,
   decreaseItem,
+  setIdItems,
 } = drawerSlice.actions;
 
 export default drawerSlice.reducer;
