@@ -12,6 +12,17 @@ const tiresSlice = createSlice({
   name: "tires",
   initialState,
   reducers: {
+    addFavItem(state,action){
+      state.favItems.push({
+        ...action.payload,
+      });
+    },
+    deleteFavItem(state,action){
+      console.log(action.payload);
+      state.favItems = state.favItems.filter(
+        (obj) => obj.id !== action.payload
+      );
+    },
     toggleFavItem(state, action) {
       const findItemId = state.favItems.find(
         (obj) => obj.id === action.payload.id
@@ -48,6 +59,6 @@ const tiresSlice = createSlice({
   },
 });
 
-export const { setItems, setFavoriteItems, toggleFavItem, setCategory, getItemFromId } = tiresSlice.actions;
+export const { setItems, setFavoriteItems, toggleFavItem, setCategory, getItemFromId, addFavItem, deleteFavItem } = tiresSlice.actions;
 
 export default tiresSlice.reducer;

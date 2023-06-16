@@ -29,31 +29,43 @@ function App() {
       try {
 
         if( authToken.length !== 0 ) {
-          const cartItemsResponse = await axios.get("http://127.0.0.1:8000/api/v1/cart/",  {
+          const [cartItemsResponse, favItemsResponse] = await Promise.all([
+            axios.get("http://127.0.0.1:8000/api/v1/cart/",  {
             headers: {
               "Authorization": `Token ${authToken.auth_token}`,
             }
-          });
+          }),
+          axios.get("http://127.0.0.1:8000/api/v1/favorites/",  {
+            headers: {
+              "Authorization": `Token ${authToken.auth_token}`,
+            }
+          })
+          ]);
           const cartItems = [];
+          const favItems = [];
           items.map((item) => {
             cartItemsResponse.data.map((cartItem) => {
-              if(item.id === cartItem.item) {
+              if (item.id === cartItem.item) {
                 const count = cartItem.count;
                 const cartId = cartItem.id;
                 cartItems.push({cartId, count, ...item});
               }
             })
+            favItemsResponse.data.map((favItem) => {
+              if (item.id === favItem.item) {
+                const count = favItem.count;
+                const cartId = favItem.id;
+                favItems.push({cartId, count, ...item});
+              }
+            })
           })
           dispatch(setCartItems(cartItems));
+          dispatch(setFavoriteItems(favItems));
         };
 
-        const [ favoritesResponse, itemsResponse] =
-          await Promise.all([
-            axios.get("http://localhost:4000/favorite"),
-            axios.get("http://127.0.0.1:8000/api/v1/items"),
-          ]);
+        const  itemsResponse = await axios.get("http://127.0.0.1:8000/api/v1/items");
         dispatch(setItems(itemsResponse.data));
-        dispatch(setFavoriteItems(favoritesResponse.data));
+        // dispatch(setFavoriteItems(favoritesResponse.data));
         dispatch(setTotalPrice());
       } catch (error) {
         alert("Ошибка при запросе данных");
