@@ -7,6 +7,7 @@ const initialState = {
   cartOpenned: false,
   loginOpenned: false,
   registrationOpenned: false,
+  loginDialogOpenned: false,
 };
 
 const drawerSlice = createSlice({
@@ -73,6 +74,9 @@ const drawerSlice = createSlice({
       state.registrationOpenned = action.payload;
     },
     
+    setLoginDialogOpenned(state, action) {
+      state.loginDialogOpenned = action.payload;
+    }
   },
 });
 
@@ -86,6 +90,7 @@ export const {
   removeItem,
   decreaseItem,
   setIdItems,
+  setLoginDialogOpenned
 } = drawerSlice.actions;
 
 export default drawerSlice.reducer;

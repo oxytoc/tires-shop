@@ -158,5 +158,19 @@
     }
   ],
   "favorite": [],
-  "cart": []
+  "cart": [
+    {
+      "count": 1,
+      "id": 2,
+      "brand": "BOTO",
+      "model": "BT215",
+      "width": 385,
+      "height": 55,
+      "diametr": 22.5,
+      "plyRating": 20,
+      "loadIndex": "160K",
+      "price": 27000,
+      "image": "http://127.0.0.1:8000/media/images/2023/06/14/BT215-BOTO.png"
+    }
+  ]
 }

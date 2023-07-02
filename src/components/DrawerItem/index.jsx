@@ -13,7 +13,6 @@ import styles from "./DrawerItem.module.scss";
 
 export default function DrawerItem({ obj }) {
   const dispatch = useDispatch();
-
   const { authToken } = useSelector((state) => state.loginSlice);
 
   const onClickRemove = async (obj) => {
@@ -52,7 +51,7 @@ export default function DrawerItem({ obj }) {
         </p>
         <div className="flex flex-column justify-between">
           <b className="fw-700 fs-20">{obj.price} руб.</b>
-          <CountItem obj={obj} findItem={findItem} />
+          <CountItem productItem={obj} findItem={findItem} />
         </div>
       </div>
       <img

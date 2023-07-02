@@ -4,7 +4,7 @@ import axios from "axios";
 import CountItem from "../CountItem";
 
 import { useDispatch, useSelector } from "react-redux";
-import { addItem, setTotalPrice } from "../../redux/slices/drawerSlice";
+import { addItem, setTotalPrice, setLoginDialogOpenned } from "../../redux/slices/drawerSlice";
 import { addFavItem, deleteFavItem } from "../../redux/slices/tiresSlice";
 
 import lickedImg from "../../assets/img/catalog/licked.svg";
@@ -27,28 +27,15 @@ export default function TiresCard({
   category,
   categoryItem,
 }) {
-  const productItem = {
-    id,
-    brand,
-    model,
-    width,
-    height,
-    diametr,
-    plyRating,
-    loadIndex,
-    price,
-    image,
-  };
 
   const dispatch = useDispatch();
-  const { cartItems } = useSelector((state) => state.drawerSlice);
   const { favItems, items } = useSelector((state) => state.tiresSlice);
   const { id: userId } = useSelector((state) => state.userSlice);
 
   const modelBrand = model + " " + brand;
 
   const { authToken } = useSelector((state) => state.loginSlice);
-
+  const { loginDialogOpenned } = useSelector(state => state.drawerSlice);
   const findItem = useSelector((state) =>
     state.drawerSlice.cartItems.find((obj) => obj.id === id)
   );
@@ -59,38 +46,11 @@ export default function TiresCard({
   let favItemsAfterResponse = {};
 
   const onClickAdd = async () => {
-    try {
-      const cartItemResponse = await axios.post(
-        "http://127.0.0.1:8000/api/v1/cart/",
-        {
-          user: userId,
-          item: id,
-        },
-        {
-          headers: {
-            Authorization: `Token ${authToken.auth_token}`,
-          },
-        }
-      );
-      items.map((item) => {
-        if (item.id === cartItemResponse.data.item) {
-          const count = cartItemResponse.data.count;
-          const cartId = cartItemResponse.data.id;
-          cartItemsAfterResponse = { cartId, count, ...item };
-        }
-      });
-      dispatch(addItem(cartItemsAfterResponse));
-      dispatch(setTotalPrice());
-    } catch (error) {
-      alert(error);
-    }
-  };
+    if(checkAuthToken()) {
 
-  const onClickFavItems = async () => {
-    try {
-      if (!favFindItem) {
-        const favItemResponse = await axios.post(
-          "http://127.0.0.1:8000/api/v1/favorites/",
+      try {
+        const cartItemResponse = await axios.post(
+          "http://127.0.0.1:8000/api/v1/cart/",
           {
             user: userId,
             item: id,
@@ -102,27 +62,70 @@ export default function TiresCard({
           }
         );
         items.map((item) => {
-          if (item.id === favItemResponse.data.item) {
-            const cartId = favItemResponse.data.id;
-            favItemsAfterResponse = { cartId, ...item };
-            dispatch(addFavItem(favItemsAfterResponse));
+          if (item.id === cartItemResponse.data.item) {
+            const count = cartItemResponse.data.count;
+            const cartId = cartItemResponse.data.id;
+            cartItemsAfterResponse = { cartId, count, ...item };
           }
         });
-        // await axios.post("http://localhost:4000/favorite", { ...productItem });
-      } else {
-        console.log(favFindItem);
-        await axios.delete(
-          `http://127.0.0.1:8000/api/v1/favorites/${favFindItem.cartId}/`,
-          {
-            headers: {
-              Authorization: `Token ${authToken.auth_token}`,
-            },
-          }
-        );
-        dispatch(deleteFavItem(favFindItem.id));
-        // await axios.delete(`http://localhost:4000/favorite/${id}`);
+        dispatch(addItem(cartItemsAfterResponse));
+        dispatch(setTotalPrice());
+      } catch (error) {
+        alert(error);
       }
-    } catch (error) {}
+
+    } else {
+      dispatch(setLoginDialogOpenned(true));
+    }
+  };
+
+  const checkAuthToken = ( ) => {
+    console.log(!!authToken.auth_token);
+    return !!authToken.auth_token;
+  }
+
+  const onClickFavItems = async () => {
+    if(checkAuthToken()) {
+
+      try {
+        if (!favFindItem) {
+          const favItemResponse = await axios.post(
+            "http://127.0.0.1:8000/api/v1/favorites/",
+            {
+              user: userId,
+              item: id,
+            },
+            {
+              headers: {
+                Authorization: `Token ${authToken.auth_token}`,
+              },
+            }
+          );
+          items.map((item) => {
+            if (item.id === favItemResponse.data.item) {
+              const cartId = favItemResponse.data.id;
+              favItemsAfterResponse = { cartId, ...item };
+              dispatch(addFavItem(favItemsAfterResponse));
+            }
+          });
+        } else {
+          await axios.delete(
+            `http://127.0.0.1:8000/api/v1/favorites/${favFindItem.cartId}/`,
+            {
+              headers: {
+                Authorization: `Token ${authToken.auth_token}`,
+              },
+            }
+          );
+          dispatch(deleteFavItem(favFindItem.id));
+        }
+      } catch (error) {
+        alert(error);
+      }
+
+    } else {
+      dispatch(setLoginDialogOpenned(true));
+    }
   };
 
   return (

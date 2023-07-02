@@ -7,7 +7,6 @@ import { Options } from "../components/Options";
 import { setCategory } from "../redux/slices/tiresSlice";
 
 export const Card = () => {
-  // const _ = require("lodash");
   const dispatch = useDispatch();
 
   const { items, category, categoryName } = useSelector((state) => state.tiresSlice);
@@ -42,7 +41,7 @@ export const Card = () => {
           <h1 className="main-title mb-15">{categoryName}</h1>
         )}
 
-        <div className="card__products d-flex justify-between flex-wrap">
+        <div className="card__products d-flex flex-start flex-wrap">
           {renderItems()}
         </div>
       </div>

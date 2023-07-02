@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setCartOpenned, setLoginOpenned } from "../redux/slices/drawerSlice";
+import { setCartOpenned, setLoginOpenned, setCartItems } from "../redux/slices/drawerSlice";
 import { setAuthToken } from "../redux/slices/loginSlice";
 
 import logo from "../assets/img/logo.svg";
@@ -13,6 +13,7 @@ import favorite from "../assets/img/header/favorite.svg";
 import user from "../assets/img/header/user.svg";
 import Search from "./Search";
 import LogoutIcon from '@mui/icons-material/Logout';
+import { setFavoriteItems } from '../redux/slices/tiresSlice';
 
 function Header() {
 
@@ -35,6 +36,8 @@ function Header() {
         }
       );
       dispatch(setAuthToken(''));
+      dispatch(setFavoriteItems([]));
+      dispatch(setCartItems([]));
     } catch (error) {
       console.log(error);
     }

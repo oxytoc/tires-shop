@@ -16,6 +16,7 @@ import { Card } from "./pages/Card";
 import { Favorite } from "./pages/Favorite";
 import { Login } from "./components/Login";
 import { Registration } from "./components/Registration";
+import LoginDialog from "./components/LoginDialog";
 
 function App() {
   const { authToken } = useSelector((state) => state.loginSlice);
@@ -86,6 +87,7 @@ function App() {
       <Drawer />
       <Registration />
       <Login />
+      <LoginDialog />
       <Footer />
     </div>
   );
